@@ -1,25 +1,33 @@
 {
   "expo": {
-    "name": "Birthday_Reminder",
-    "slug": "Birthday_Reminder",
+    "name": "Doglan Gün Ýatlatma",
+    "slug": "birthday-reminder",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "birthdayreminder",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "owner": "begenchdev",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.birthdayreminder.app"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#FF6B9D",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.birthdayreminder.app",
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "output": "static",
@@ -27,6 +35,14 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#FF6B9D",
+          "sounds": []
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -43,6 +59,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d60e22cf-c701-4a17-b95a-3a655addae64"
+      }
     }
   }
 }

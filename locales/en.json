@@ -1,0 +1,97 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "home": {
+    "title": "Birthdays",
+    "subtitle": "{{count}} birthday saved",
+    "subtitle_plural": "{{count}} birthdays saved",
+    "emptyTitle": "No birthdays yet",
+    "emptySubtitle": "Add your first birthday or import from a file",
+    "todayBirthday": "Today! 🎉",
+    "tomorrowBirthday": "Tomorrow! 🎂",
+    "inDays": "in {{days}} days"
+  },
+  "form": {
+    "addTitle": "Add Birthday",
+    "editTitle": "Edit Birthday",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "birthDate": "Birth Date",
+    "firstNamePlaceholder": "Enter first name",
+    "lastNamePlaceholder": "Enter last name",
+    "validation": {
+      "required": "Please fill in all fields"
+    }
+  },
+  "datePicker": {
+    "day": "Day",
+    "month": "Month",
+    "year": "Year"
+  },
+  "notifications": {
+    "birthdayTitle": "🎉 Birthday Today!",
+    "birthdayBody": "Today is {{name}}'s birthday!",
+    "reminderTitle": "🎂 Birthday Tomorrow!",
+    "reminderBody": "Tomorrow is {{name}}'s birthday!",
+    "monthlyTitle": "📅 Birthdays This Month",
+    "monthlyBody": "Upcoming birthdays: {{names}}",
+    "permissionTitle": "Notifications Disabled",
+    "permissionMessage": "Please enable notifications to receive birthday reminders"
+  },
+  "import": {
+    "success": "Imported {{count}} birthdays",
+    "error": "Failed to import file. Please check the format.",
+    "noData": "No valid birthdays found in the file"
+  },
+  "delete": {
+    "title": "Delete Birthday",
+    "message": "Are you sure you want to delete {{name}}'s birthday?"
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "Birthday Reminder helps you never forget important dates",
+    "features": "Features",
+    "importFormat": "Import Format",
+    "importHelp": "Each line should contain lastname, firstname, and date separated by underscores",
+    "version": "Version",
+    "versionText": "Birthday Reminder v1.0.0",
+    "builtWith": "Built with React Native & Expo"
+  },
+  "features": {
+    "notifications": {
+      "title": "Smart Notifications",
+      "description": "Get notified at midnight on birthdays and one day before"
+    },
+    "monthly": {
+      "title": "Monthly Summary",
+      "description": "Receive a summary of all birthdays at the start of each month"
+    },
+    "import": {
+      "title": "Easy Import",
+      "description": "Import birthdays from TXT files with format: Lastname_Firstname_DD.MM.YYYY"
+    },
+    "darkMode": {
+      "title": "Dark Mode",
+      "description": "Automatic dark/light theme based on system preferences"
+    }
+  },
+  "tabs": {
+    "birthdays": "Birthdays",
+    "about": "About"
+  },
+  "age": {
+    "years": "{{count}} years old"
+  }
+}

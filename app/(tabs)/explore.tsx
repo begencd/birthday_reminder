@@ -1,112 +1,171 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { BorderRadius, FontSizes, Spacing } from '../../constants/theme';
+import { useTheme } from '../../hooks/use-theme';
+import i18n from '../../utils/i18n';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+export default function ExploreScreen() {
+  const { colors } = useTheme();
 
-export default function TabTwoScreen() {
+  const features = [
+    {
+      icon: 'notifications',
+      title: i18n.t('features.notifications.title'),
+      description: i18n.t('features.notifications.description'),
+    },
+    {
+      icon: 'calendar',
+      title: i18n.t('features.monthly.title'),
+      description: i18n.t('features.monthly.description'),
+    },
+    {
+      icon: 'cloud-upload',
+      title: i18n.t('features.import.title'),
+      description: i18n.t('features.import.description'),
+    },
+    {
+      icon: 'moon',
+      title: i18n.t('features.darkMode.title'),
+      description: i18n.t('features.darkMode.description'),
+    },
+  ];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={styles.header}>
+        <Text style={[styles.title, { color: colors.text }]}>
+          {i18n.t('about.title')}
+        </Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
+          {i18n.t('about.subtitle')}
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          {i18n.t('about.features')}
+        </Text>
+        {features.map((feature, index) => (
+          <View
+            key={index}
+            style={[styles.featureCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+          >
+            <View style={[styles.iconContainer, { backgroundColor: colors.accent }]}>
+              <Ionicons name={feature.icon as any} size={24} color={colors.primary} />
+            </View>
+            <View style={styles.featureContent}>
+              <Text style={[styles.featureTitle, { color: colors.text }]}>
+                {feature.title}
+              </Text>
+              <Text style={[styles.featureDescription, { color: colors.textSecondary }]}>
+                {feature.description}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          {i18n.t('about.importFormat')}
+        </Text>
+        <View style={[styles.codeBlock, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <Text style={[styles.codeText, { color: colors.text }]}>
+            Atayew_Begenc_12.05.2001{'\n'}
+            Annayew_Myrat_03.11.1999{'\n'}
+            Familiýa_At_GG.AA.ÝÝÝÝ
+          </Text>
+        </View>
+        <Text style={[styles.helpText, { color: colors.textSecondary }]}>
+          {i18n.t('about.importHelp')}
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          {i18n.t('about.version')}
+        </Text>
+        <Text style={[styles.versionText, { color: colors.textSecondary }]}>
+          {i18n.t('about.versionText')}
+        </Text>
+        <Text style={[styles.versionText, { color: colors.textSecondary }]}>
+          {i18n.t('about.builtWith')}
+        </Text>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
   },
-  titleContainer: {
+  header: {
+    padding: Spacing.lg,
+    paddingTop: Spacing.xl,
+  },
+  title: {
+    fontSize: FontSizes.xxl,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    fontSize: FontSizes.md,
+    marginTop: Spacing.sm,
+  },
+  section: {
+    padding: Spacing.lg,
+    paddingTop: 0,
+  },
+  sectionTitle: {
+    fontSize: FontSizes.xl,
+    fontWeight: '600',
+    marginBottom: Spacing.md,
+  },
+  featureCard: {
     flexDirection: 'row',
-    gap: 8,
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    marginBottom: Spacing.md,
+    borderWidth: 1,
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: BorderRadius.md,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: Spacing.md,
+  },
+  featureContent: {
+    flex: 1,
+  },
+  featureTitle: {
+    fontSize: FontSizes.lg,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  featureDescription: {
+    fontSize: FontSizes.sm,
+    lineHeight: 20,
+  },
+  codeBlock: {
+    padding: Spacing.md,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    marginBottom: Spacing.sm,
+  },
+  codeText: {
+    fontFamily: 'monospace',
+    fontSize: FontSizes.sm,
+    lineHeight: 20,
+  },
+  helpText: {
+    fontSize: FontSizes.sm,
+    lineHeight: 20,
+  },
+  versionText: {
+    fontSize: FontSizes.sm,
+    marginBottom: 4,
   },
 });

@@ -1,0 +1,96 @@
+{
+  "common": {
+    "save": "Ýatda sakla",
+    "cancel": "Ýatyr",
+    "delete": "Poz",
+    "edit": "Üýtget",
+    "add": "Goş",
+    "close": "Ýap",
+    "ok": "Bolýar",
+    "yes": "Hawa",
+    "no": "Ýok",
+    "loading": "Ýüklenýär...",
+    "error": "Ýalňyşlyk",
+    "success": "Üstünlikli"
+  },
+  "home": {
+    "title": "Doglan günler",
+    "subtitle": "{{count}} doglan gün ýatda saklandy",
+    "emptyTitle": "Entek doglan gün ýok",
+    "emptySubtitle": "Ilkinji doglan güniňizi goşuň ýa-da faýldan import ediň",
+    "todayBirthday": "Şu gün! 🎉",
+    "tomorrowBirthday": "Ertir! 🎂",
+    "inDays": "{{days}} günden"
+  },
+  "form": {
+    "addTitle": "Doglan gün goş",
+    "editTitle": "Doglan güni üýtget",
+    "firstName": "Ady",
+    "lastName": "Familiýasy",
+    "birthDate": "Doglan senesi",
+    "firstNamePlaceholder": "Adyny giriziň",
+    "lastNamePlaceholder": "Familiýasyny giriziň",
+    "validation": {
+      "required": "Ähli meýdançalary dolduryň"
+    }
+  },
+  "datePicker": {
+    "day": "Gün",
+    "month": "Aý",
+    "year": "Ýyl"
+  },
+  "notifications": {
+    "birthdayTitle": "🎉 Şu gün doglan gün!",
+    "birthdayBody": "Şu gün {{name}} doglan güni!",
+    "reminderTitle": "🎂 Ertir doglan gün!",
+    "reminderBody": "Ertir {{name}} doglan güni!",
+    "monthlyTitle": "📅 Şu aýda doglan günler",
+    "monthlyBody": "Ýakyn wagtda doglan günler: {{names}}",
+    "permissionTitle": "Bildirişler öçürildi",
+    "permissionMessage": "Doglan gün ýatlatmalaryny almak üçin bildirişleri açyň"
+  },
+  "import": {
+    "success": "{{count}} doglan gün import edildi",
+    "error": "Faýl import edilmedi. Formaty barlaň.",
+    "noData": "Faýlda dogry doglan gün tapylmady"
+  },
+  "delete": {
+    "title": "Doglan güni poz",
+    "message": "{{name}} doglan günini pozmak isleýärsiňizmi?"
+  },
+  "about": {
+    "title": "Barada",
+    "subtitle": "Doglan gün ýatlatma programmasy möhüm seneleri ýatdan çykarmaga kömek edýär",
+    "features": "Aýratynlyklar",
+    "importFormat": "Import formaty",
+    "importHelp": "Her setir familiýa, at we senäni aşakdaky görnüşde saklamalydyr",
+    "version": "Wersiýa",
+    "versionText": "Doglan gün ýatlatma v1.0.0",
+    "builtWith": "React Native we Expo bilen döredildi"
+  },
+  "features": {
+    "notifications": {
+      "title": "Akylly bildirişler",
+      "description": "Doglan günde ýary gijede we bir gün öň bildiriş alyň"
+    },
+    "monthly": {
+      "title": "Aýlyk jemleýiş",
+      "description": "Her aýyň başynda şol aýdaky ähli doglan günler barada bildiriş alyň"
+    },
+    "import": {
+      "title": "Aňsat import",
+      "description": "Doglan günleri TXT faýllaryndan import ediň: Familiýa_At_GG.AA.ÝÝÝÝ"
+    },
+    "darkMode": {
+      "title": "Garaňky režim",
+      "description": "Ulgam sazlamalaryna görä awtomatik açyk/garaňky tema"
+    }
+  },
+  "tabs": {
+    "birthdays": "Doglan günler",
+    "about": "Barada"
+  },
+  "age": {
+    "years": "{{count}} ýaş"
+  }
+}

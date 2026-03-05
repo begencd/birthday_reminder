@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Alert,
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    Modal,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { BorderRadius, FontSizes, Spacing } from '../constants/theme';
 import { useTheme } from '../hooks/use-theme';
@@ -24,14 +24,34 @@ interface BirthdayFormProps {
 
 export function BirthdayForm({ visible, onClose, onSave, initialData }: BirthdayFormProps) {
   const { colors } = useTheme();
-  const initialDate = initialData ? new Date(initialData.date) : new Date();
   
-  const [firstName, setFirstName] = useState(initialData?.firstName || '');
-  const [lastName, setLastName] = useState(initialData?.lastName || '');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDay, setSelectedDay] = useState(initialDate.getDate());
-  const [selectedMonth, setSelectedMonth] = useState(initialDate.getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState(initialDate.getFullYear());
+  const [selectedDay, setSelectedDay] = useState(new Date().getDate());
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  // Update form fields when initialData changes (for editing)
+  useEffect(() => {
+    if (initialData) {
+      setFirstName(initialData.firstName);
+      setLastName(initialData.lastName);
+      const date = new Date(initialData.date);
+      setSelectedDay(date.getDate());
+      setSelectedMonth(date.getMonth() + 1);
+      setSelectedYear(date.getFullYear());
+    } else if (visible) {
+      // Only reset when form becomes visible for adding new birthday
+      setFirstName('');
+      setLastName('');
+      // Set to January 1st of current year as a neutral default
+      setSelectedDay(1);
+      setSelectedMonth(1);
+      setSelectedYear(new Date().getFullYear());
+    }
+    setShowDatePicker(false);
+  }, [initialData, visible]);
 
   const handleSave = () => {
     if (!firstName.trim() || !lastName.trim()) {
@@ -41,16 +61,11 @@ export function BirthdayForm({ visible, onClose, onSave, initialData }: Birthday
 
     const date = new Date(selectedYear, selectedMonth - 1, selectedDay);
     onSave({ firstName: firstName.trim(), lastName: lastName.trim(), date });
-    handleClose();
+    setShowDatePicker(false);
+    onClose();
   };
 
   const handleClose = () => {
-    setFirstName('');
-    setLastName('');
-    const now = new Date();
-    setSelectedDay(now.getDate());
-    setSelectedMonth(now.getMonth() + 1);
-    setSelectedYear(now.getFullYear());
     setShowDatePicker(false);
     onClose();
   };

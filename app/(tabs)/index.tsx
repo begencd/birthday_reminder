@@ -2,13 +2,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import {
-  Alert,
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Alert,
+    FlatList,
+    RefreshControl,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { BirthdayCard } from '../../components/birthday-card';
 import { BirthdayForm } from '../../components/birthday-form';
@@ -66,11 +66,16 @@ export default function HomeScreen() {
       const isoDate = data.date.toISOString().split('T')[0];
 
       if (editingBirthday) {
-        if (editingBirthday.notificationId) {
-          await notificationService.cancelNotification(editingBirthday.notificationId);
-        }
-        if (editingBirthday.reminderNotificationId) {
-          await notificationService.cancelNotification(editingBirthday.reminderNotificationId);
+        // Cancel old notifications
+        try {
+          if (editingBirthday.notificationId) {
+            await notificationService.cancelNotification(editingBirthday.notificationId);
+          }
+          if (editingBirthday.reminderNotificationId) {
+            await notificationService.cancelNotification(editingBirthday.reminderNotificationId);
+          }
+        } catch (error) {
+          console.error('Error canceling old notifications:', error);
         }
 
         const updated: Birthday = {
@@ -80,11 +85,17 @@ export default function HomeScreen() {
           date: isoDate,
         };
 
-        const notificationId = await notificationService.scheduleBirthdayNotification(updated);
-        const reminderNotificationId = await notificationService.scheduleReminderNotification(updated);
-        
-        updated.notificationId = notificationId;
-        updated.reminderNotificationId = reminderNotificationId;
+        // Schedule new notifications
+        try {
+          const notificationId = await notificationService.scheduleBirthdayNotification(updated);
+          const reminderNotificationId = await notificationService.scheduleReminderNotification(updated);
+          
+          updated.notificationId = notificationId;
+          updated.reminderNotificationId = reminderNotificationId;
+        } catch (error) {
+          console.error('Error scheduling notifications:', error);
+          // Continue without notifications if scheduling fails
+        }
 
         await storageService.updateBirthday(editingBirthday.id, updated);
         setEditingBirthday(undefined);
@@ -96,19 +107,32 @@ export default function HomeScreen() {
           date: isoDate,
         };
 
-        const notificationId = await notificationService.scheduleBirthdayNotification(newBirthday);
-        const reminderNotificationId = await notificationService.scheduleReminderNotification(newBirthday);
-        
-        newBirthday.notificationId = notificationId;
-        newBirthday.reminderNotificationId = reminderNotificationId;
+        // Schedule notifications
+        try {
+          const notificationId = await notificationService.scheduleBirthdayNotification(newBirthday);
+          const reminderNotificationId = await notificationService.scheduleReminderNotification(newBirthday);
+          
+          newBirthday.notificationId = notificationId;
+          newBirthday.reminderNotificationId = reminderNotificationId;
+        } catch (error) {
+          console.error('Error scheduling notifications:', error);
+          // Continue without notifications if scheduling fails
+        }
 
         await storageService.addBirthday(newBirthday);
       }
 
       await loadBirthdays();
-      const allBirthdays = await storageService.getBirthdays();
-      await notificationService.scheduleMonthlyReminder(allBirthdays);
+      
+      // Schedule monthly reminder
+      try {
+        const allBirthdays = await storageService.getBirthdays();
+        await notificationService.scheduleMonthlyReminder(allBirthdays);
+      } catch (error) {
+        console.error('Error scheduling monthly reminder:', error);
+      }
     } catch (error) {
+      console.error('Error saving birthday:', error);
       Alert.alert(i18n.t('common.error'), 'Doglan gün ýatda saklanmady');
     }
   };
@@ -122,17 +146,22 @@ export default function HomeScreen() {
     try {
       const birthday = birthdays.find(b => b.id === id);
       if (birthday) {
-        if (birthday.notificationId) {
-          await notificationService.cancelNotification(birthday.notificationId);
-        }
-        if (birthday.reminderNotificationId) {
-          await notificationService.cancelNotification(birthday.reminderNotificationId);
+        try {
+          if (birthday.notificationId) {
+            await notificationService.cancelNotification(birthday.notificationId);
+          }
+          if (birthday.reminderNotificationId) {
+            await notificationService.cancelNotification(birthday.reminderNotificationId);
+          }
+        } catch (error) {
+          console.error('Error canceling notifications:', error);
         }
       }
 
       await storageService.deleteBirthday(id);
       await loadBirthdays();
     } catch (error) {
+      console.error('Error deleting birthday:', error);
       Alert.alert(i18n.t('common.error'), 'Doglan gün pozulmady');
     }
   };
@@ -142,33 +171,46 @@ export default function HomeScreen() {
       const imported = await fileImportService.importFromTxtFile();
       
       if (imported.length === 0) {
-        Alert.alert(i18n.t('import.noData'));
+        Alert.alert(i18n.t('common.error'), i18n.t('import.noData'));
         return;
       }
 
       for (const birthday of imported) {
-        const notificationId = await notificationService.scheduleBirthdayNotification(birthday);
-        const reminderNotificationId = await notificationService.scheduleReminderNotification(birthday);
-        
-        birthday.notificationId = notificationId;
-        birthday.reminderNotificationId = reminderNotificationId;
+        try {
+          const notificationId = await notificationService.scheduleBirthdayNotification(birthday);
+          const reminderNotificationId = await notificationService.scheduleReminderNotification(birthday);
+          
+          birthday.notificationId = notificationId;
+          birthday.reminderNotificationId = reminderNotificationId;
+        } catch (error) {
+          console.error('Error scheduling notifications for imported birthday:', error);
+        }
 
         await storageService.addBirthday(birthday);
       }
 
       await loadBirthdays();
-      const allBirthdays = await storageService.getBirthdays();
-      await notificationService.scheduleMonthlyReminder(allBirthdays);
+      
+      try {
+        const allBirthdays = await storageService.getBirthdays();
+        await notificationService.scheduleMonthlyReminder(allBirthdays);
+      } catch (error) {
+        console.error('Error scheduling monthly reminder:', error);
+      }
 
       Alert.alert(i18n.t('common.success'), i18n.t('import.success', { count: imported.length }));
     } catch (error) {
+      console.error('Error importing birthdays:', error);
       Alert.alert(i18n.t('common.error'), i18n.t('import.error'));
     }
   };
 
   const handleFormClose = () => {
     setShowForm(false);
-    setEditingBirthday(undefined);
+    // Small delay to prevent state conflicts
+    setTimeout(() => {
+      setEditingBirthday(undefined);
+    }, 100);
   };
 
   const getSubtitle = () => {

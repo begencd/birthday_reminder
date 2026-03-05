@@ -35,10 +35,15 @@ export function BirthdayCard({ birthday, onEdit, onDelete }: BirthdayCardProps) 
     return i18n.t('home.inDays', { days: daysUntil });
   };
 
+  const { isDark } = useTheme();
+  
   return (
     <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.leftSection}>
-        <View style={[styles.iconContainer, { backgroundColor: colors.accent }]}>
+        <View style={[
+          styles.iconContainer, 
+          { backgroundColor: isDark ? colors.accent : colors.primary + '15' }
+        ]}>
           <Ionicons name="gift" size={24} color={colors.primary} />
         </View>
         <View style={styles.infoContainer}>
@@ -46,7 +51,7 @@ export function BirthdayCard({ birthday, onEdit, onDelete }: BirthdayCardProps) 
             {birthday.firstName} {birthday.lastName}
           </Text>
           <Text style={[styles.date, { color: colors.textSecondary }]}>
-            {dateHelpers.formatDate(birthday.date)} • {age} ýaş
+            {dateHelpers.formatDate(birthday.date)} • {i18n.t('age.years', { count: age })}
           </Text>
           <Text style={[styles.countdown, { color: colors.primary }]}>
             {getDaysText()}
@@ -56,13 +61,19 @@ export function BirthdayCard({ birthday, onEdit, onDelete }: BirthdayCardProps) 
       
       <View style={styles.actions}>
         <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.accent }]}
+          style={[
+            styles.actionButton, 
+            { backgroundColor: isDark ? colors.accent : colors.border }
+          ]}
           onPress={() => onEdit(birthday)}
         >
           <Ionicons name="pencil" size={20} color={colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.accent }]}
+          style={[
+            styles.actionButton, 
+            { backgroundColor: isDark ? colors.accent : colors.border }
+          ]}
           onPress={handleDelete}
         >
           <Ionicons name="trash" size={20} color={colors.danger} />

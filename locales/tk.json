@@ -11,7 +11,10 @@
     "no": "Ýok",
     "loading": "Ýüklenýär...",
     "error": "Ýalňyşlyk",
-    "success": "Üstünlikli"
+    "success": "Üstünlikli",
+    "loadError": "Doglan günler ýüklenilmedi",
+    "saveError": "Doglan gün ýatda saklanmady",
+    "deleteError": "Doglan gün pozulmady"
   },
   "home": {
     "title": "Doglan günler",

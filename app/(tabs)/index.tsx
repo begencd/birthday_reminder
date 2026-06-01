@@ -51,7 +51,7 @@ export default function HomeScreen() {
       const sorted = dateHelpers.sortByUpcoming(data);
       setBirthdays(sorted);
     } catch (error) {
-      Alert.alert(i18n.t('common.error'), 'Doglan günler ýüklenilmedi');
+      Alert.alert(i18n.t('common.error'), i18n.t('common.loadError'));
     }
   };
 
@@ -133,7 +133,7 @@ export default function HomeScreen() {
       }
     } catch (error) {
       console.error('Error saving birthday:', error);
-      Alert.alert(i18n.t('common.error'), 'Doglan gün ýatda saklanmady');
+      Alert.alert(i18n.t('common.error'), i18n.t('common.saveError'));
     }
   };
 
@@ -162,7 +162,7 @@ export default function HomeScreen() {
       await loadBirthdays();
     } catch (error) {
       console.error('Error deleting birthday:', error);
-      Alert.alert(i18n.t('common.error'), 'Doglan gün pozulmady');
+      Alert.alert(i18n.t('common.error'), i18n.t('common.deleteError'));
     }
   };
 
@@ -207,17 +207,11 @@ export default function HomeScreen() {
 
   const handleFormClose = () => {
     setShowForm(false);
-    // Small delay to prevent state conflicts
-    setTimeout(() => {
-      setEditingBirthday(undefined);
-    }, 100);
+    setEditingBirthday(undefined);
   };
 
   const getSubtitle = () => {
-    const count = birthdays.length;
-    if (count === 0) return '0 doglan gün ýatda saklandy';
-    if (count === 1) return '1 doglan gün ýatda saklandy';
-    return `${count} doglan gün ýatda saklandy`;
+    return i18n.t('home.subtitle', { count: birthdays.length });
   };
 
   return (

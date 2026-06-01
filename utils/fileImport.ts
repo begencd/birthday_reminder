@@ -28,7 +28,8 @@ export const fileImportService = {
     const lines = content.split('\n').filter(line => line.trim());
     const birthdays: Birthday[] = [];
 
-    for (const line of lines) {
+    for (let index = 0; index < lines.length; index++) {
+      const line = lines[index];
       try {
         const parts = line.trim().split('_');
         if (parts.length !== 3) continue;
@@ -47,7 +48,7 @@ export const fileImportService = {
         const isoDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
         birthdays.push({
-          id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`,
           firstName: firstName.trim(),
           lastName: lastName.trim(),
           date: isoDate,

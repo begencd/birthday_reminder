@@ -11,7 +11,10 @@
     "no": "No",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "loadError": "Failed to load birthdays",
+    "saveError": "Failed to save birthday",
+    "deleteError": "Failed to delete birthday"
   },
   "home": {
     "title": "Birthdays",

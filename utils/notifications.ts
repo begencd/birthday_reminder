@@ -6,6 +6,8 @@ import i18n from './i18n';
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
   }),
@@ -34,16 +36,9 @@ export const notificationService = {
   },
 
   async scheduleBirthdayNotification(birthday: Birthday): Promise<string> {
-    const [year, month, day] = birthday.date.split('-').map(Number);
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    
-    let birthdayDate = new Date(currentYear, month - 1, day, 0, 0, 0);
-    
-    if (birthdayDate < now) {
-      birthdayDate = new Date(currentYear + 1, month - 1, day, 0, 0, 0);
-    }
+    const [, month, day] = birthday.date.split('-').map(Number);
 
+    // Use YEARLY trigger so the notification repeats every year on the birthday
     const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
         title: i18n.t('notifications.birthdayTitle'),
@@ -52,9 +47,12 @@ export const notificationService = {
         sound: true,
       },
       trigger: {
-        date: birthdayDate,
-        repeats: true,
-        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        type: Notifications.SchedulableTriggerInputTypes.YEARLY,
+        month: month - 1, // JS Date month range: 0-11
+        day,
+        hour: 0,
+        minute: 0,
+        ...(Platform.OS === 'android' ? { channelId: 'birthdays' } : {}),
       },
     });
 
@@ -62,15 +60,14 @@ export const notificationService = {
   },
 
   async scheduleReminderNotification(birthday: Birthday): Promise<string> {
-    const [year, month, day] = birthday.date.split('-').map(Number);
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    
-    let reminderDate = new Date(currentYear, month - 1, day - 1, 0, 0, 0);
-    
-    if (reminderDate < now) {
-      reminderDate = new Date(currentYear + 1, month - 1, day - 1, 0, 0, 0);
-    }
+    const [, month, day] = birthday.date.split('-').map(Number);
+
+    // Calculate the day before the birthday properly
+    // Using a temp Date to handle month boundaries (e.g., March 1 → Feb 28/29)
+    const tempDate = new Date(2024, month - 1, day); // use a leap year for safety
+    tempDate.setDate(tempDate.getDate() - 1);
+    const reminderMonth = tempDate.getMonth(); // already 0-indexed
+    const reminderDay = tempDate.getDate();
 
     const notificationId = await Notifications.scheduleNotificationAsync({
       content: {
@@ -80,9 +77,12 @@ export const notificationService = {
         sound: true,
       },
       trigger: {
-        date: reminderDate,
-        repeats: true,
-        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        type: Notifications.SchedulableTriggerInputTypes.YEARLY,
+        month: reminderMonth,
+        day: reminderDay,
+        hour: 9,
+        minute: 0,
+        ...(Platform.OS === 'android' ? { channelId: 'birthdays' } : {}),
       },
     });
 
@@ -91,11 +91,12 @@ export const notificationService = {
 
   async scheduleMonthlyReminder(birthdays: Birthday[]): Promise<void> {
     const now = new Date();
-    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1, 9, 0, 0);
+    const nextMonth = now.getMonth() + 1; // 0-indexed, will be 0-11 after mod
+    const targetMonth = nextMonth > 11 ? 0 : nextMonth;
     
     const birthdaysNextMonth = birthdays.filter(b => {
       const [, month] = b.date.split('-').map(Number);
-      return month === nextMonth.getMonth() + 1;
+      return (month - 1) === targetMonth; // compare 0-indexed
     });
 
     if (birthdaysNextMonth.length > 0) {
@@ -108,9 +109,11 @@ export const notificationService = {
           sound: true,
         },
         trigger: {
-          date: nextMonth,
-          repeats: true,
-          type: Notifications.SchedulableTriggerInputTypes.DATE,
+          type: Notifications.SchedulableTriggerInputTypes.MONTHLY,
+          day: 1,
+          hour: 9,
+          minute: 0,
+          ...(Platform.OS === 'android' ? { channelId: 'birthdays' } : {}),
         },
       });
     }

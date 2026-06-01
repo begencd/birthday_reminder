@@ -37,10 +37,11 @@ export function BirthdayForm({ visible, onClose, onSave, initialData }: Birthday
     if (initialData) {
       setFirstName(initialData.firstName);
       setLastName(initialData.lastName);
-      const date = new Date(initialData.date);
-      setSelectedDay(date.getDate());
-      setSelectedMonth(date.getMonth() + 1);
-      setSelectedYear(date.getFullYear());
+      // Parse date parts directly to avoid timezone offset issues with new Date('YYYY-MM-DD')
+      const [year, month, day] = initialData.date.split('-').map(Number);
+      setSelectedDay(day);
+      setSelectedMonth(month);
+      setSelectedYear(year);
     } else if (visible) {
       // Only reset when form becomes visible for adding new birthday
       setFirstName('');
